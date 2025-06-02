@@ -1,0 +1,43 @@
+# Normalize line endings for all text files
+* text=auto
+
+# Unity YAML-based assets (ensures proper merging)
+*.meta unityyaml
+*.unity unityyaml
+*.prefab unityyaml
+*.asset unityyaml
+*.mat unityyaml
+*.anim unityyaml
+*.controller unityyaml
+*.overrideController unityyaml
+*.physicMaterial unityyaml
+*.physicsMaterial2D unityyaml
+*.playable unityyaml
+*.mask unityyaml
+*.brush unityyaml
+*.flare unityyaml
+*.fontsettings unityyaml
+*.guiskin unityyaml
+*.giparams unityyaml
+*.renderTexture unityyaml
+*.spriteatlas unityyaml
+*.terrainlayer unityyaml
+*.mixer unityyaml
+*.shadervariants unityyaml
+*.preset unityyaml
+
+# Prevent Git from treating binary files as text
+*.png -text
+*.jpg -text
+*.wav -text
+*.fbx -text
+*.mp3 -text
+*.mp4 -text
+*.mov -text
+*.zip -text
+*.dll -text
+*.exe -text
+
+# Special handling for Unity terrain and navmesh assets
+*-[Tt]errain.asset -unityyaml
+*-[Nn]av[Mm]esh.asset -unityyaml
