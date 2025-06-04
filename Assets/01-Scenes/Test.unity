@@ -2342,6 +2342,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7273926157692253545, guid: 4563cd8ca3d35de49ab2f8b59f8f2f0e, type: 3}
   m_PrefabInstance: {fileID: 255939484}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &263414424
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 263414425}
+  m_Layer: 2
+  m_Name: GroundCheckR
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &263414425
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263414424}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.002, y: 0.013, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1645041405}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &296758152
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3676,6 +3707,11 @@ CapsuleCollider:
   m_Height: 0.25
   m_Direction: 1
   m_Center: {x: 0, y: 0.09, z: 0}
+--- !u!4 &619915132 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 0425b796c81339747b273809061f87d4, type: 3}
+  m_PrefabInstance: {fileID: 1205168008}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &628695203
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3999,6 +4035,11 @@ CapsuleCollider:
   m_Height: 0.32
   m_Direction: 1
   m_Center: {x: 0, y: -0.075, z: 0.045}
+--- !u!4 &671815706 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -2770666803903516498, guid: 0425b796c81339747b273809061f87d4, type: 3}
+  m_PrefabInstance: {fileID: 1205168008}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &674076000
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4503,7 +4544,7 @@ GameObject:
   m_Component:
   - component: {fileID: 951174617}
   m_Layer: 2
-  m_Name: GroundCheck
+  m_Name: GroundCheckL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4518,11 +4559,11 @@ Transform:
   m_GameObject: {fileID: 951174616}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0.025, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1801107730}
+  m_Father: {fileID: 671815706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &976020984
 PrefabInstance:
@@ -6493,7 +6534,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -2770666803903516498, guid: 0425b796c81339747b273809061f87d4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 951174617}
+    - targetCorrespondingSourceObject: {fileID: 2916570863362053800, guid: 0425b796c81339747b273809061f87d4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 263414425}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1082271958561512970, guid: 0425b796c81339747b273809061f87d4, type: 3}
       insertIndex: -1
@@ -9219,7 +9266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef6ee8c8f6244ed2b9a68d988710a2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 165731042971221841}
+  Target: {fileID: 1801107729}
   CameraPivot: {fileID: 981028500}
   CameraTransform: {fileID: 1865169311}
   CameraFollowSpeed: 0.2
@@ -10526,6 +10573,11 @@ CapsuleCollider:
   m_Height: 0.32
   m_Direction: 1
   m_Center: {x: 0, y: -0.075, z: 0.045}
+--- !u!4 &1645041405 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2916570863362053800, guid: 0425b796c81339747b273809061f87d4, type: 3}
+  m_PrefabInstance: {fileID: 1205168008}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1656235026
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11802,7 +11854,6 @@ Transform:
   - {fileID: 248153752}
   - {fileID: 650518555329930731}
   - {fileID: 1470149383}
-  - {fileID: 951174617}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1801107731
@@ -12624,7 +12675,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
 --- !u!114 &1801107740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12638,7 +12689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   webLine: {fileID: 1801107738}
-  handPosition: {fileID: 0}
+  handPosition: {fileID: 619915132}
   swingForce: 35
   damping: 20
   maxSwingDistance: 75
@@ -12671,12 +12722,14 @@ MonoBehaviour:
   runSpeed: 5
   sprintSpeed: 10
   rotationSpeed: 15
-  jumpForce: 5
-  groundCheckRadius: 0.2
+  jumpForce: 10
+  fallForce: 11
+  groundCheckDistance: 0.22
+  groundCheckL: {fileID: 951174617}
+  groundCheckR: {fileID: 263414425}
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
-  groundCheckTransform: {fileID: 951174617}
   runningAudio: {fileID: 1801107736}
 --- !u!114 &1801107743
 MonoBehaviour:

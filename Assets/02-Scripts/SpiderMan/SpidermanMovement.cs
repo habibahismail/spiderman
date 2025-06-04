@@ -2,25 +2,27 @@ using UnityEngine;
 
 public class SpidermanMovement : MonoBehaviour
 {
+    [Header("Movement Settings")]
     [SerializeField] private float runSpeed = 5;
     [SerializeField] private float sprintSpeed = 10;
     [SerializeField] private float rotationSpeed = 15;
-    
+
+    [Header("Jump Settings")]
     [SerializeField] private float jumpForce = 10f;
-    [SerializeField] private float groundCheckRadius = 0.2f;
+    [SerializeField] private float fallForce = 125f;
+    [Space]
+    [SerializeField] private float groundCheckDistance = 0.5f;
+    [SerializeField] private Transform groundCheckL;
+    [SerializeField] private Transform groundCheckR;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Transform groundCheckTransform;
-     //[SerializeField] private float fallForce = 125f;
 
     public AudioSource runningAudio;
 
     private bool isMoving;
     private bool isJumping;
-    
     private bool isGrounded = true;
-    private Collider[] groundCollisions;
-    
-    private float inAirTimer;
+
+    //private float inAirTimer;
 
     private Rigidbody rb;
     private Vector3 moveDirection;
@@ -34,26 +36,33 @@ public class SpidermanMovement : MonoBehaviour
         spidermanController = GetComponent<SpidermanController>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-       GroundCheck();
+        GroundCheck();
     }
 
     private void GroundCheck()
     {
-        groundCollisions = Physics.OverlapSphere(groundCheckTransform.position, groundCheckRadius, groundLayer);
-
-        if (groundCollisions.Length > 0 ) 
+        RaycastHit hit;
+        
+        if (Physics.Raycast(groundCheckL.position, Vector3.down, out hit, groundCheckDistance, groundLayer)
+            || Physics.Raycast(groundCheckR.position, Vector3.down, out hit, groundCheckDistance, groundLayer))
+        {
             isGrounded = true;
+        }
         else
-            isGrounded= false;
+        {
+            isGrounded = false;
+        }
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(groundCheckTransform.position, groundCheckRadius);
-    //}
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawRay(groundCheckL.position, Vector3.down);
+        Gizmos.DrawRay(groundCheckR.position, Vector3.down);
+    }
 
     public void HandleMovement()
     {
@@ -104,38 +113,37 @@ public class SpidermanMovement : MonoBehaviour
 
     public void HandleJumping()
     {
-        if (isGrounded)
+        if (isGrounded && !isJumping)
         {
-            if (isJumping)
-            {
-                isJumping = false;
-                spidermanController.CurrentState = SpiderManState.Idle;
-                return;
-            }
-
-            if (isMoving)
-                animator.SetTrigger("runJump");
-            else
-                animator.SetTrigger("jump");
-
-            Debug.Log("JUMP!");
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            animator.SetBool("Grounded", false);
             
             isGrounded = false;
             isJumping = true;
-        }   
+        }
+
+        if (isJumping)
+        {
+            animator.SetFloat("Height", transform.position.y);
+            rb.AddForce(Vector3.down * fallForce * 1.5f, ForceMode.Acceleration); // Boost downward force
+        }
     }
 
     public void JumpInput()
     {
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            SpiderManState _currentState = spidermanController.CurrentState;
+            spidermanController.CurrentState = SpiderManState.Jumping;
+        }
+    }    
 
-            if (_currentState == SpiderManState.Moving || _currentState == SpiderManState.Idle)
-            {
-               spidermanController.CurrentState = SpiderManState.Jumping;
-            }
+    public void JumpLogic()
+    {
+        if (isJumping && isGrounded && rb.linearVelocity.y <= 0)
+        {
+            isJumping = false;
+            animator.SetBool("Grounded", true);
+            spidermanController.CurrentState = SpiderManState.Idle;
         }
     }
 

@@ -30,6 +30,10 @@ public class SpidermanController : MonoBehaviour
                 movement.JumpInput();
                 break;
 
+            case SpiderManState.Jumping:
+                movement.JumpLogic();
+                break;
+
             case SpiderManState.Climbing:
                
                 break;
