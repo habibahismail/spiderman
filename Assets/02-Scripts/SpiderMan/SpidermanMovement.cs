@@ -9,23 +9,18 @@ public class SpidermanMovement : MonoBehaviour
 
     [Header("Jump Settings")]
     [SerializeField] private float jumpForce = 10f;
-    [SerializeField] private float fallForce = 125f;
-    [Space]
-    [SerializeField] private float groundCheckDistance = 0.5f;
-    [SerializeField] private Transform groundCheckL;
-    [SerializeField] private Transform groundCheckR;
-    [SerializeField] private LayerMask groundLayer;
+  
 
     public AudioSource runningAudio;
 
     private bool isMoving;
     private bool isJumping;
-    private bool isGrounded = true;
 
     //private float inAirTimer;
 
     private Rigidbody rb;
     private Vector3 moveDirection;
+
     private Animator animator;
     private SpidermanController spidermanController;
 
@@ -36,37 +31,17 @@ public class SpidermanMovement : MonoBehaviour
         spidermanController = GetComponent<SpidermanController>();
     }
 
-    private void Update()
+    private float GetPlayerHeight()
     {
-        GroundCheck();
-    }
-
-    private void GroundCheck()
-    {
-        RaycastHit hit;
-        
-        if (Physics.Raycast(groundCheckL.position, Vector3.down, out hit, groundCheckDistance, groundLayer)
-            || Physics.Raycast(groundCheckR.position, Vector3.down, out hit, groundCheckDistance, groundLayer))
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 100f))
         {
-            isGrounded = true;
+            return transform.position.y - hit.point.y; // Distance from ground
         }
-        else
-        {
-            isGrounded = false;
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-
-        Gizmos.DrawRay(groundCheckL.position, Vector3.down);
-        Gizmos.DrawRay(groundCheckR.position, Vector3.down);
+        return 0f; // Default fallback
     }
 
     public void HandleMovement()
     {
-        Debug.Log(isGrounded);
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
@@ -113,25 +88,26 @@ public class SpidermanMovement : MonoBehaviour
 
     public void HandleJumping()
     {
-        if (isGrounded && !isJumping)
+        if (SpidermanController.Grounded && !isJumping)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * jumpForce *Time.deltaTime, ForceMode.Impulse);
             animator.SetBool("Grounded", false);
             
-            isGrounded = false;
+            SpidermanController.Grounded = false;
             isJumping = true;
         }
 
         if (isJumping)
         {
-            animator.SetFloat("Height", transform.position.y);
-            rb.AddForce(Vector3.down * fallForce * 1.5f, ForceMode.Acceleration); // Boost downward force
+            float smoothedHeight = GetPlayerHeight();
+            smoothedHeight = Mathf.Lerp(smoothedHeight, GetPlayerHeight(), Time.deltaTime * 5);
+            animator.SetFloat("Height", smoothedHeight);
         }
     }
 
     public void JumpInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && SpidermanController.Grounded)
         {
             spidermanController.CurrentState = SpiderManState.Jumping;
         }
@@ -139,7 +115,7 @@ public class SpidermanMovement : MonoBehaviour
 
     public void JumpLogic()
     {
-        if (isJumping && isGrounded && rb.linearVelocity.y <= 0)
+        if (isJumping && SpidermanController.Grounded && rb.linearVelocity.y <= 0)
         {
             isJumping = false;
             animator.SetBool("Grounded", true);

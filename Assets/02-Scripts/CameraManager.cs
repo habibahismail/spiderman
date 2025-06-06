@@ -24,7 +24,7 @@ public class CameraManager : MonoBehaviour
 
     void Update()
     {
-        HandleQuitting();
+        //HandleQuitting();
         FollowTarget();
         RotateCamera();
         HandleCameraCollisions();

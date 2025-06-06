@@ -1,3 +1,4 @@
+using FischlWorks;
 using UnityEngine;
 
 [RequireComponent(typeof(SpidermanMovement))]
@@ -6,23 +7,43 @@ using UnityEngine;
 public class SpidermanController : MonoBehaviour
 {
     public SpiderManState CurrentState;
-    
+    public static bool Grounded;
+
+    [Header("Ground Check Settings")]
+    [SerializeField] private float groundCheckDistance = 0.21f;
+    [SerializeField] private Transform groundCheckL;
+    [SerializeField] private Transform groundCheckR;
+    [SerializeField] private LayerMask groundLayer;
+
+    [Space]
+    [SerializeField] private float fallForce = 11f;
+
     private SpidermanMovement movement;
     private SpidermanSwing swing;
     private SpidermanClimb climb;
-    private Animator animator;
+  
+    private Rigidbody rb;
+
+    private csHomebrewIK csHomebrewIK;
+    private bool footIkEnabled;
 
     private void Start()
     {
         movement = GetComponent<SpidermanMovement>();
         swing = GetComponent<SpidermanSwing>();
         climb = GetComponent<SpidermanClimb>();
+        
+        rb = GetComponent<Rigidbody>();
+        csHomebrewIK = GetComponentInChildren<csHomebrewIK>();
 
-        animator = GetComponent<Animator>();
+        Grounded = true;
+        footIkEnabled = true;
     }
 
     private void Update()
     {
+        GroundCheck();
+
         switch (CurrentState)
         {
             case SpiderManState.Idle: 
@@ -31,6 +52,13 @@ public class SpidermanController : MonoBehaviour
                 break;
 
             case SpiderManState.Jumping:
+
+                if (footIkEnabled)
+                {
+                    csHomebrewIK.enabled = false;
+                    footIkEnabled = false;
+                }
+
                 movement.JumpLogic();
                 break;
 
@@ -46,6 +74,15 @@ public class SpidermanController : MonoBehaviour
              
                 break;
         }
+
+        if (Grounded)
+        {
+            if (!footIkEnabled)
+            {
+                csHomebrewIK.enabled = true;
+                footIkEnabled = true;
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -54,8 +91,11 @@ public class SpidermanController : MonoBehaviour
         {
             case SpiderManState.Idle:
             case SpiderManState.Moving:
-                movement.HandleMovement();
-                movement.HandleRotation();
+                if (Grounded)
+                {
+                    movement.HandleMovement();
+                    movement.HandleRotation();
+                }
                 break;
 
             case SpiderManState.Jumping:
@@ -75,24 +115,42 @@ public class SpidermanController : MonoBehaviour
                 //HandleFalling();
                 break;
         }
-    }
-}
 
-public enum SpiderManAnimationState
-{
-    Idle = 0,
-    Run = 1,
-    Sprint = 2,
-    Jump = 3,
-    RunningJump = 4,
-    Climbing = 5,
-    ClimbingIdle = 6,
-    ClimbJump = 7,
-    HardLanding = 8,
-    Falling = 9,
-    Swinging = 10,
-    SwingingBothArms = 11,
-    Death = 12
+        if (!Grounded)
+        {
+            Debug.Log("Boost fall");
+            rb.AddForce(1.5f * fallForce * Time.deltaTime * Vector3.down, ForceMode.Acceleration); // Boost downward force
+        }
+    }
+
+    private void GroundCheck()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(groundCheckL.position, Vector3.down, out hit, groundCheckDistance, groundLayer)
+            || Physics.Raycast(groundCheckR.position, Vector3.down, out hit, groundCheckDistance, groundLayer))
+        {
+            Grounded = true;
+        }
+        else
+        {
+            Grounded = false;
+        }
+
+        Debug.Log("Grounded: " + Grounded);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        //Gizmos.DrawWireSphere(groundCheckL.position, groundCheckSphereRadius);
+        //Gizmos.DrawWireSphere(groundCheckR.position, groundCheckSphereRadius);
+
+
+        Gizmos.DrawRay(groundCheckL.position, Vector3.down);
+        Gizmos.DrawRay(groundCheckR.position, Vector3.down);
+    }
 }
 
 public enum SpiderManState
