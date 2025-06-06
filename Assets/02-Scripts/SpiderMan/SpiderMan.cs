@@ -510,19 +510,19 @@ public class SpiderMan : MonoBehaviour
     }
 }
 
-//public enum SpiderManAnimationState
-//{
-//    Idle = 0,
-//    Run = 1,
-//    Sprint = 2,
-//    Jump = 3,
-//    RunningJump = 4,
-//    Climbing = 5,
-//    ClimbingIdle = 6,
-//    ClimbJump = 7,
-//    HardLanding = 8,
-//    Falling = 9,
-//    Swinging = 10,
-//    SwingingBothArms = 11,
-//    Death = 12
-//}
+public enum SpiderManAnimationState
+{
+    Idle = 0,
+    Run = 1,
+    Sprint = 2,
+    Jump = 3,
+    RunningJump = 4,
+    Climbing = 5,
+    ClimbingIdle = 6,
+    ClimbJump = 7,
+    HardLanding = 8,
+    Falling = 9,
+    Swinging = 10,
+    SwingingBothArms = 11,
+    Death = 12
+}
