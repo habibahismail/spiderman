@@ -9,9 +9,6 @@ public class SpidermanMovement : MonoBehaviour
 
     [Header("Jump Settings")]
     [SerializeField] private float jumpForce = 10f;
-  
-
-    public AudioSource runningAudio;
 
     private bool isMoving;
     private bool isJumping;
@@ -50,7 +47,6 @@ public class SpidermanMovement : MonoBehaviour
         {
             isMoving = false;
             spidermanController.CurrentState = SpiderManState.Idle;
-            runningAudio.Stop();
 
             // Explicitly stop movement
             rb.linearVelocity = Vector3.zero;
@@ -68,11 +64,6 @@ public class SpidermanMovement : MonoBehaviour
         moveDirection *= speed;
 
         spidermanController.CurrentState = SpiderManState.Moving;
-      
-        if (!runningAudio.isPlaying)
-        {
-            runningAudio.Play();
-        }
 
         rb.linearVelocity = moveDirection; // Ensure velocity updates with movement
         animator.SetFloat("MoveSpeed", rb.linearVelocity.magnitude);

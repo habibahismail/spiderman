@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 292e62be354e6704d98f3dd40476dee0
+timeCreated: 1471532950
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 257362
+  packageName: Bro Audio
+  packageVersion: 2.0.8
+  assetPath: Assets/BroAudio/Demo/ParticlePack/Materials/Embers.mat
+  uploadId: 759242

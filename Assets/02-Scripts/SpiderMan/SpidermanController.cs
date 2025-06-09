@@ -63,7 +63,15 @@ public class SpidermanController : MonoBehaviour
                 break;
 
             case SpiderManState.Climbing:
-               
+
+                climb.ClimbInput();
+
+                if (footIkEnabled)
+                {
+                    csHomebrewIK.enabled = false;
+                    footIkEnabled = false;
+                }
+
                 break;
 
             case SpiderManState.Swinging:
@@ -118,7 +126,6 @@ public class SpidermanController : MonoBehaviour
 
         if (!Grounded)
         {
-            Debug.Log("Boost fall");
             rb.AddForce(1.5f * fallForce * Time.deltaTime * Vector3.down, ForceMode.Acceleration); // Boost downward force
         }
     }
@@ -137,16 +144,12 @@ public class SpidermanController : MonoBehaviour
             Grounded = false;
         }
 
-        Debug.Log("Grounded: " + Grounded);
+        //Debug.Log("Grounded: " + Grounded);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-
-        //Gizmos.DrawWireSphere(groundCheckL.position, groundCheckSphereRadius);
-        //Gizmos.DrawWireSphere(groundCheckR.position, groundCheckSphereRadius);
-
 
         Gizmos.DrawRay(groundCheckL.position, Vector3.down);
         Gizmos.DrawRay(groundCheckR.position, Vector3.down);
